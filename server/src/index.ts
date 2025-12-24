@@ -8,11 +8,26 @@ import type { SearchResult, SearchResponse } from './types';
 const app = new Hono();
 
 const port = parseInt(process.env.PORT || '8000', 10);
-const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+
+// Allowed origins for CORS
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'https://searchstein-1.onrender.com',
+  'https://searchstein.com',
+  'https://www.searchstein.com',
+  'http://searchstein.com',
+  'http://www.searchstein.com',
+];
 
 // CORS configuration
 app.use('/*', cors({
-  origin: frontendUrl,
+  origin: (origin) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return true;
+    // Check if origin is in allowed list
+    return allowedOrigins.includes(origin);
+  },
   credentials: true,
 }));
 
