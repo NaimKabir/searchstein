@@ -26,7 +26,7 @@ function IndexComponent() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-4 text-center">Searchstein</h1>
         <p className="text-sm text-muted-foreground font-mono text-center mb-6 max-w-3xl mx-auto">
-          A searchable repository of Epstein files available from the{' '}
+          A searchable repository of the Epstein files available from the{' '}
           <a
             href="https://www.justice.gov/epstein"
             target="_blank"
