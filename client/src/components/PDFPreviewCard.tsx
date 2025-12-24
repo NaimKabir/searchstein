@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Download, FileText } from 'lucide-react';
@@ -15,12 +14,7 @@ interface PDFPreviewCardProps {
 }
 
 export function PDFPreviewCard({ result, onClick }: PDFPreviewCardProps) {
-  const [numPages, setNumPages] = useState<number | null>(null);
-  const [pageWidth, setPageWidth] = useState(300);
-
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
-    setNumPages(numPages);
-  }
+  const pageWidth = 300;
 
   // Use highlighted text if available, otherwise fall back to truncated text
   const displayText = result.highlight && result.highlight.length > 0
@@ -58,7 +52,6 @@ export function PDFPreviewCard({ result, onClick }: PDFPreviewCardProps) {
         <div className="border rounded-md overflow-hidden bg-gray-50 flex justify-center items-center min-h-[200px]">
           <Document
             file={result.page_pdf_url}
-            onLoadSuccess={onDocumentLoadSuccess}
             loading={
               <div className="flex items-center justify-center p-8">
                 <span className="text-sm text-muted-foreground font-mono">Loading PDF...</span>

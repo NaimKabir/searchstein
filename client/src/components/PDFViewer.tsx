@@ -1,6 +1,6 @@
 import { Document, Page } from 'react-pdf';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Download, X } from 'lucide-react';
+import { Download } from 'lucide-react';
 import type { SearchResult } from '@/types';
 
 interface PDFViewerProps {

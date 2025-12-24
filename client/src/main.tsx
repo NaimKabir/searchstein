@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { RouterProvider, createRouter, createRootRoute, createRoute } from '@tanstack/react-router';
+import { RouterProvider, createRouter, createRootRoute } from '@tanstack/react-router';
 import { SearchBar } from '@/components/SearchBar';
 import { SearchResults } from '@/components/SearchResults';
 import { useSearch } from '@/hooks/useSearch';
