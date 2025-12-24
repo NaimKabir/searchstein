@@ -41,7 +41,7 @@ function IndexComponent() {
       </div>
       <div className="mb-8 pb-6 border-b text-center">
         <p className="text-xs text-muted-foreground font-mono">
-          Problems with search? Send feedback to{' '}
+          Problems with search or need raw API access? Send a message to{' '}
           <a
             href="https://x.com/KabirCreates"
             target="_blank"
