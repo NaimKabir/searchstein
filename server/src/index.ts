@@ -13,6 +13,7 @@ const port = parseInt(process.env.PORT || '8000', 10);
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
+  'https://searchstein.onrender.com',
   'https://searchstein-1.onrender.com',
   'https://searchstein.com',
   'https://www.searchstein.com',
@@ -24,9 +25,9 @@ const allowedOrigins = [
 app.use('/*', cors({
   origin: (origin) => {
     // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return true;
-    // Check if origin is in allowed list
-    return allowedOrigins.includes(origin);
+    if (!origin) return '*';
+    // Check if origin is in allowed list and return the origin or false
+    return allowedOrigins.includes(origin) ? origin : false;
   },
   credentials: true,
 }));
