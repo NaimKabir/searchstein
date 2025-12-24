@@ -1,0 +1,16 @@
+{
+  "name": "searchstein",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun run dev:server & bun run dev:client",
+    "dev:client": "cd client && bun run dev",
+    "dev:server": "cd server && bun run dev",
+    "install:all": "cd client && bun install && cd ../server && bun install"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ]
+}
