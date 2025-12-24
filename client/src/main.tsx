@@ -33,7 +33,7 @@ function IndexComponent() {
             rel="noopener noreferrer"
             className="underline hover:text-foreground"
           >
-            Justice Department's Epstein Files
+            Justice Department
           </a>
           {' '}as of Dec 23, 2025.
         </p>
