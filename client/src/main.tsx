@@ -26,7 +26,7 @@ function IndexComponent() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-4 text-center">Searchstein</h1>
         <p className="text-sm text-muted-foreground font-mono text-center mb-6 max-w-3xl mx-auto">
-          A searchable repository of unredacted Epstein files available from the{' '}
+          A searchable repository of Epstein files available from the{' '}
           <a
             href="https://www.justice.gov/epstein"
             target="_blank"
@@ -38,19 +38,6 @@ function IndexComponent() {
           {' '}as of Dec 23, 2025.
         </p>
         <SearchBar value={query} onChange={setQuery} />
-      </div>
-      <div className="mb-8 pb-6 border-b text-center">
-        <p className="text-xs text-muted-foreground font-mono">
-          Problems with search or need raw API access? Send a message to{' '}
-          <a
-            href="https://x.com/KabirCreates"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-foreground"
-          >
-            @kabircreates
-          </a>
-        </p>
       </div>
       <SearchResults
         results={results}
