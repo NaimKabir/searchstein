@@ -1,6 +1,6 @@
 import { Document, Page, pdfjs } from 'react-pdf';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Download, FileText } from 'lucide-react';
+import { Download } from 'lucide-react';
 import type { SearchResult } from '@/types';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
@@ -30,8 +30,7 @@ export function PDFPreviewCard({ result, onClick }: PDFPreviewCardProps) {
     >
       <CardHeader className="pb-3">
         <CardTitle className="text-sm font-mono flex items-center justify-between">
-          <span className="flex items-center gap-2">
-            <FileText className="w-4 h-4" />
+          <span>
             {result.document_filename}
           </span>
           <a
