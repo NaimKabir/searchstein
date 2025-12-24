@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { searchDocuments } from './elasticsearch';
 import { signS3Url } from './s3';
+import { rateLimit } from './ratelimit';
 import type { SearchResult, SearchResponse } from './types';
 
 const app = new Hono();
@@ -20,8 +21,13 @@ app.get('/health', (c) => {
   return c.json({ status: 'ok' });
 });
 
-// Search endpoint
-app.get('/api/search', async (c) => {
+// Search endpoint with rate limiting
+app.get('/api/search',
+  rateLimit({
+    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000', 10), // Default: 1 minute
+    maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '200', 10), // Default: 30 req/min
+  }),
+  async (c) => {
   const query = c.req.query('q') || '';
   const from = parseInt(c.req.query('from') || '0', 10);
   const size = parseInt(c.req.query('size') || '10', 10);
@@ -72,9 +78,14 @@ app.get('/api/search', async (c) => {
     console.error('Search error:', error);
     return c.json({ error: 'Search failed' }, 500);
   }
-});
+  }
+);
+
+const rateLimitWindow = parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000', 10);
+const rateLimitMax = parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '30', 10);
 
 console.log(`Server starting on port ${port}...`);
+console.log(`Rate limiting: ${rateLimitMax} requests per ${rateLimitWindow / 1000}s per IP`);
 
 export default {
   port,
