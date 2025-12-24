@@ -39,6 +39,22 @@ function IndexComponent() {
         </p>
         <SearchBar value={query} onChange={setQuery} />
       </div>
+      <div className="mb-8 pb-6 border-b text-center">
+        <p className="text-xs text-muted-foreground font-mono mb-2">
+          Unredaction can cause artifacts: download the original files available{' '}
+          on each result to make comparisons.
+        </p>
+        <p className="text-xs text-muted-foreground font-mono">
+          And remember to do your part. Torrent the full files{' '}
+          <a
+            href="magnet:?xt=urn:btih:84420693b93939ca7e6fa8f269b46f952a97eca2&dn=epstein_files.zip&xl=3274376854"
+            className="underline hover:text-foreground"
+          >
+            here
+          </a>
+          {' '}and seed them for others.
+        </p>
+      </div>
       <SearchResults
         results={results}
         loading={loading}
