@@ -70,7 +70,7 @@ function IndexComponent() {
         <p className="text-xs text-muted-foreground font-mono">
           And remember to do your part. Torrent the full files{' '}
           <a
-            href="magnet:?xt=urn:btih:84420693b93939ca7e6fa8f269b46f952a97eca2&dn=epstein_files.zip&xl=3274376854"
+            href="magnet:?xt=urn:btih:0b75e5c1fc59666e1b4acaf277faa376b90b9860&dn=eps_files_with_dataset8.zip"
             className="underline hover:text-foreground"
           >
             here
