@@ -69,7 +69,7 @@ export function SearchBar({
             {/* Include filters */}
             <div>
               <label className="block text-sm font-mono text-muted-foreground mb-2">
-                Include documents matching:
+                Include document titles matching:
               </label>
               <Input
                 type="text"
@@ -104,7 +104,7 @@ export function SearchBar({
             {/* Exclude filters */}
             <div>
               <label className="block text-sm font-mono text-muted-foreground mb-2">
-                Exclude documents matching:
+                Exclude document titles matching:
               </label>
               <Input
                 type="text"
