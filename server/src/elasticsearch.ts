@@ -36,13 +36,33 @@ export async function searchDocuments(
 
     const searchBody = {
       retriever: {
-        standard: {
-          query: {
-            multi_match: {
-              query,
-              fields: ['text'],
+        rrf: {
+          retrievers: [
+            {
+              // Semantic search on text_semantic field
+              standard: {
+                query: {
+                  semantic: {
+                    field: 'text_semantic',
+                    query,
+                  },
+                },
+              },
             },
-          },
+            {
+              // Traditional text search on text field
+              standard: {
+                query: {
+                  multi_match: {
+                    query,
+                    fields: ['text'],
+                  },
+                },
+              },
+            },
+          ],
+          rank_window_size: 100,
+          rank_constant: 60,
         },
       },
       from,

@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { searchDocuments } from './elasticsearch';
-import { signS3Url } from './s3';
+import { signS3Url, getDocumentPages } from './s3';
 import { rateLimit } from './ratelimit';
 import type { SearchResult, SearchResponse } from './types';
 
@@ -94,6 +94,29 @@ app.get('/api/search',
     console.error('Search error:', error);
     return c.json({ error: 'Search failed' }, 500);
   }
+  }
+);
+
+// Document pages endpoint - returns ordered array of signed URLs for all pages
+app.get('/api/document-pages',
+  rateLimit({
+    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000', 10),
+    maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '200', 10),
+  }),
+  async (c) => {
+    const pageUrl = c.req.query('page_url');
+
+    if (!pageUrl) {
+      return c.json({ error: 'Query parameter "page_url" is required' }, 400);
+    }
+
+    try {
+      const urls = await getDocumentPages(pageUrl);
+      return c.json({ urls });
+    } catch (error) {
+      console.error('Error fetching document pages:', error);
+      return c.json({ error: 'Failed to fetch document pages' }, 500);
+    }
   }
 );
 
