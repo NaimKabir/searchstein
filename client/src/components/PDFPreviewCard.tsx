@@ -71,7 +71,7 @@ export function PDFPreviewCard({ result, onClick }: PDFPreviewCardProps) {
           </Document>
         </div>
         <div
-          className="text-xs text-muted-foreground font-mono leading-relaxed [&_mark]:bg-yellow-200 [&_mark]:text-foreground [&_mark]:font-semibold"
+          className="text-xs text-muted-foreground font-mono leading-relaxed break-words [&_mark]:bg-yellow-200 [&_mark]:text-foreground [&_mark]:font-semibold"
           dangerouslySetInnerHTML={{ __html: displayText }}
         />
         <div className="pt-2 border-t">

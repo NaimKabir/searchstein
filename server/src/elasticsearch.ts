@@ -4,10 +4,10 @@ const esNode = process.env.ES_NODE || '';
 const esApiKey = process.env.ES_API_KEY || '';
 const esIndex = process.env.ES_INDEX || 'epstein-documents';
 
-// Test connection on startup
+// Test connection on startup (using root endpoint for serverless compatibility)
 async function testConnection() {
   try {
-    const response = await fetch(`${esNode}/_cluster/health`, {
+    const response = await fetch(`${esNode}/`, {
       headers: {
         'Authorization': `ApiKey ${esApiKey}`,
         'Content-Type': 'application/json',
@@ -15,7 +15,7 @@ async function testConnection() {
     });
 
     if (response.ok) {
-      console.log('✓ Elasticsearch connected');
+      console.log('✓ Elasticsearch connected (serverless)');
     } else {
       console.error('✗ Elasticsearch connection failed:', response.status, response.statusText);
     }

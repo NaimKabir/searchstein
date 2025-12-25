@@ -62,7 +62,7 @@ export function PDFViewer({ result, open, onClose }: PDFViewerProps) {
           <div className="mt-4 p-4 bg-muted rounded-md">
             <h4 className="text-xs font-semibold font-mono mb-2">Matching Excerpts:</h4>
             <div
-              className="text-xs text-muted-foreground font-mono leading-relaxed [&_mark]:bg-yellow-200 [&_mark]:text-foreground [&_mark]:font-semibold"
+              className="text-xs text-muted-foreground font-mono leading-relaxed break-words [&_mark]:bg-yellow-200 [&_mark]:text-foreground [&_mark]:font-semibold"
               dangerouslySetInnerHTML={{ __html: result.highlight.join(' ... ') }}
             />
           </div>
