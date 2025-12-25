@@ -108,7 +108,7 @@ export function SearchBar({
               </label>
               <Input
                 type="text"
-                placeholder="e.g. 'Redacted' (press Enter to add)"
+                placeholder="e.g. 'EFTA00002501' (press Enter to add)"
                 value={excludeInputValue}
                 onChange={(e) => setExcludeInputValue(e.target.value)}
                 onKeyDown={handleExcludeKeyDown}
