@@ -9,7 +9,7 @@ const s3Client = new S3Client({
   },
 });
 
-const s3UrlExpiry = parseInt(process.env.S3_URL_EXPIRY || '1800', 10);
+const s3UrlExpiry = 86400; // 24 hours in seconds
 const s3Bucket = process.env.S3_BUCKET || '';
 
 export async function signS3Url(s3Url: string): Promise<string> {
