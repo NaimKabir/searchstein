@@ -5,14 +5,22 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 export async function searchDocuments(
   query: string,
   from: number = 0,
-  size: number = 10
+  size: number = 10,
+  includeDocumentNames?: string[],
+  excludeDocumentNames?: string[]
 ): Promise<SearchResponse> {
-  if (!query.trim()) {
-    return { results: [], total: 0 };
-  }
-
   try {
-    const url = `${API_URL}/api/search?q=${encodeURIComponent(query)}&from=${from}&size=${size}`;
+    let url = `${API_URL}/api/search?q=${encodeURIComponent(query)}&from=${from}&size=${size}`;
+    if (includeDocumentNames && includeDocumentNames.length > 0) {
+      includeDocumentNames.forEach(name => {
+        url += `&include_document=${encodeURIComponent(name)}`;
+      });
+    }
+    if (excludeDocumentNames && excludeDocumentNames.length > 0) {
+      excludeDocumentNames.forEach(name => {
+        url += `&exclude_document=${encodeURIComponent(name)}`;
+      });
+    }
     const response = await fetch(url);
 
     if (response.status === 429) {

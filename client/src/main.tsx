@@ -19,7 +19,21 @@ const rootRoute = createRootRoute({
 
 // Index component
 function IndexComponent() {
-  const { query, setQuery, results, loading, error, hasMore, loadMore } = useSearch();
+  const {
+    query,
+    setQuery,
+    includeDocumentNames,
+    addIncludeDocumentName,
+    removeIncludeDocumentName,
+    excludeDocumentNames,
+    addExcludeDocumentName,
+    removeExcludeDocumentName,
+    results,
+    loading,
+    error,
+    hasMore,
+    loadMore
+  } = useSearch();
 
   return (
     <>
@@ -37,7 +51,16 @@ function IndexComponent() {
           </a>
           {' '}as of Dec 23, 2025.
         </p>
-        <SearchBar value={query} onChange={setQuery} />
+        <SearchBar
+          value={query}
+          onChange={setQuery}
+          includeDocumentNames={includeDocumentNames}
+          onAddIncludeDocumentName={addIncludeDocumentName}
+          onRemoveIncludeDocumentName={removeIncludeDocumentName}
+          excludeDocumentNames={excludeDocumentNames}
+          onAddExcludeDocumentName={addExcludeDocumentName}
+          onRemoveExcludeDocumentName={removeExcludeDocumentName}
+        />
       </div>
       <div className="mb-8 pb-6 border-b text-center">
         <p className="text-xs text-muted-foreground font-mono mb-2">

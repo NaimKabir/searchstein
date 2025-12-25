@@ -47,14 +47,18 @@ app.get('/api/search',
   const query = c.req.query('q') || '';
   const from = parseInt(c.req.query('from') || '0', 10);
   const size = parseInt(c.req.query('size') || '10', 10);
-
-  if (!query) {
-    return c.json({ error: 'Query parameter "q" is required' }, 400);
-  }
+  const includeDocumentNames = c.req.queries('include_document') || [];
+  const excludeDocumentNames = c.req.queries('exclude_document') || [];
 
   try {
     // Query Elasticsearch
-    const { hits, total } = await searchDocuments(query, from, size);
+    const { hits, total } = await searchDocuments(
+      query,
+      from,
+      size,
+      includeDocumentNames.length > 0 ? includeDocumentNames : undefined,
+      excludeDocumentNames.length > 0 ? excludeDocumentNames : undefined
+    );
 
     // Transform results and sign S3 URLs
     const results: SearchResult[] = await Promise.all(
