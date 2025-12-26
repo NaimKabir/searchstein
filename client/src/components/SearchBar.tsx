@@ -23,7 +23,10 @@ export function SearchBar({
   onAddExcludeDocumentName,
   onRemoveExcludeDocumentName,
 }: SearchBarProps) {
-  const [showAdvanced, setShowAdvanced] = useState(false);
+  // Expand Advanced section if there are any filters in URL
+  const [showAdvanced, setShowAdvanced] = useState(
+    includeDocumentNames.length > 0 || excludeDocumentNames.length > 0
+  );
   const [includeInputValue, setIncludeInputValue] = useState('');
   const [excludeInputValue, setExcludeInputValue] = useState('');
 

@@ -1,13 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { RouterProvider, createRouter, createRootRoute } from '@tanstack/react-router';
+import { RouterProvider, createRouter, createRootRoute, createRoute } from '@tanstack/react-router';
 import { SearchBar } from '@/components/SearchBar';
 import { SearchResults } from '@/components/SearchResults';
 import { useSearch } from '@/hooks/useSearch';
 import './index.css';
 
+// Define search params schema
+type SearchParams = {
+  q?: string;
+  include?: string[];
+  exclude?: string[];
+};
+
 // Create root route
-const rootRoute = createRootRoute({
+const rootRoute = createRootRoute();
+
+// Create index route with search params
+const indexRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/',
+  validateSearch: (search: Record<string, unknown>): SearchParams => {
+    return {
+      q: (search.q as string) || undefined,
+      include: Array.isArray(search.include)
+        ? search.include
+        : search.include
+        ? [search.include as string]
+        : undefined,
+      exclude: Array.isArray(search.exclude)
+        ? search.exclude
+        : search.exclude
+        ? [search.exclude as string]
+        : undefined,
+    };
+  },
   component: () => (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -90,7 +117,7 @@ function IndexComponent() {
 }
 
 // Create the route tree
-const routeTree = rootRoute;
+const routeTree = rootRoute.addChildren([indexRoute]);
 
 // Create a new router instance
 const router = createRouter({ routeTree });
