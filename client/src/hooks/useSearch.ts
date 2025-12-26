@@ -1,12 +1,26 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useNavigate, useSearch as useRouterSearch } from '@tanstack/react-router';
 import { searchDocuments } from '@/lib/api';
 import { useDebounce } from './useDebounce';
 import type { SearchResult } from '@/types';
 
 export function useSearch() {
-  const [query, setQuery] = useState('');
-  const [includeDocumentNames, setIncludeDocumentNames] = useState<string[]>([]);
-  const [excludeDocumentNames, setExcludeDocumentNames] = useState<string[]>([]);
+  // Read search params from router
+  const searchParams = useRouterSearch({ from: '/' });
+  const navigate = useNavigate({ from: '/' });
+
+  const query = searchParams.q || '';
+
+  // Memoize arrays to prevent infinite re-renders from new array references
+  const includeDocumentNames = useMemo(
+    () => searchParams.include || [],
+    [searchParams.include]
+  );
+  const excludeDocumentNames = useMemo(
+    () => searchParams.exclude || [],
+    [searchParams.exclude]
+  );
+
   const [results, setResults] = useState<SearchResult[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -70,33 +84,84 @@ export function useSearch() {
     }
   }, [loading, hasMore, debouncedQuery, includeDocumentNames, excludeDocumentNames, page, performSearch]);
 
+  // Setters navigate to new URL with updated params
+  const setQuery = useCallback(
+    (newQuery: string) => {
+      navigate({
+        search: {
+          q: newQuery || undefined,
+          include: includeDocumentNames.length > 0 ? includeDocumentNames : undefined,
+          exclude: excludeDocumentNames.length > 0 ? excludeDocumentNames : undefined,
+        },
+        replace: true,
+      });
+    },
+    [navigate, includeDocumentNames, excludeDocumentNames]
+  );
+
   const addIncludeDocumentName = useCallback(
     (name: string) => {
       const trimmed = name.trim();
       if (trimmed && !includeDocumentNames.includes(trimmed)) {
-        setIncludeDocumentNames((prev) => [...prev, trimmed]);
+        navigate({
+          search: {
+            q: query || undefined,
+            include: [...includeDocumentNames, trimmed],
+            exclude: excludeDocumentNames.length > 0 ? excludeDocumentNames : undefined,
+          },
+          replace: true,
+        });
       }
     },
-    [includeDocumentNames]
+    [navigate, query, includeDocumentNames, excludeDocumentNames]
   );
 
-  const removeIncludeDocumentName = useCallback((name: string) => {
-    setIncludeDocumentNames((prev) => prev.filter((n) => n !== name));
-  }, []);
+  const removeIncludeDocumentName = useCallback(
+    (name: string) => {
+      const newInclude = includeDocumentNames.filter((n) => n !== name);
+      navigate({
+        search: {
+          q: query || undefined,
+          include: newInclude.length > 0 ? newInclude : undefined,
+          exclude: excludeDocumentNames.length > 0 ? excludeDocumentNames : undefined,
+        },
+        replace: true,
+      });
+    },
+    [navigate, query, includeDocumentNames, excludeDocumentNames]
+  );
 
   const addExcludeDocumentName = useCallback(
     (name: string) => {
       const trimmed = name.trim();
       if (trimmed && !excludeDocumentNames.includes(trimmed)) {
-        setExcludeDocumentNames((prev) => [...prev, trimmed]);
+        navigate({
+          search: {
+            q: query || undefined,
+            include: includeDocumentNames.length > 0 ? includeDocumentNames : undefined,
+            exclude: [...excludeDocumentNames, trimmed],
+          },
+          replace: true,
+        });
       }
     },
-    [excludeDocumentNames]
+    [navigate, query, includeDocumentNames, excludeDocumentNames]
   );
 
-  const removeExcludeDocumentName = useCallback((name: string) => {
-    setExcludeDocumentNames((prev) => prev.filter((n) => n !== name));
-  }, []);
+  const removeExcludeDocumentName = useCallback(
+    (name: string) => {
+      const newExclude = excludeDocumentNames.filter((n) => n !== name);
+      navigate({
+        search: {
+          q: query || undefined,
+          include: includeDocumentNames.length > 0 ? includeDocumentNames : undefined,
+          exclude: newExclude.length > 0 ? newExclude : undefined,
+        },
+        replace: true,
+      });
+    },
+    [navigate, query, includeDocumentNames, excludeDocumentNames]
+  );
 
   return {
     query,
